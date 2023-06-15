@@ -49,7 +49,7 @@ public class SellerDaoJDBC implements SellerDao {
             rs = st.executeQuery();
             if(rs.next()){
                 Department dep = instantiateDepartment(rs);
-                Seller seller = instantiateSeller(rs,dep);
+                Seller seller = instantiateSeller(rs,dep) ;
                 return  seller;
 
             }
