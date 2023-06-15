@@ -42,8 +42,11 @@ public class Main {
         seller = sellerDao.findById(1);
         seller.setName("Carla alves");
         sellerDao.update(seller);
-        System.out.println();
+
         System.out.println("Update confirmado");
+
+        System.out.println("=== Teste 5: seller update ====");
+        
     }
 
 
