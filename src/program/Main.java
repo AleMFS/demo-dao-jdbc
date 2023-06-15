@@ -31,5 +31,12 @@ public class Main {
         for (Seller c : seller1){
             System.out.println(c);
         }
+
+        System.out.println("=== teste 4 : seller Insert ===");
+        Seller newSeller = new Seller(null,"Alexandre","Alexandre@gmail.com",new Date(),5000.00,department);
+        sellerDao.insert(newSeller);
+        System.out.println(newSeller.getId());
     }
+
+
 }

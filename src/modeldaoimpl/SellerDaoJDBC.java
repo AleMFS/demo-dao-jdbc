@@ -6,10 +6,9 @@ import model.entities.Department;
 import model.entities.Seller;
 import modeldao.SellerDao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,13 +16,49 @@ import java.util.Map;
 
 public class SellerDaoJDBC implements SellerDao {
 
+    static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private Connection conn;
 
     public SellerDaoJDBC(Connection conn){
         this.conn = conn;
     }
     @Override
-    public void inset(Seller seller) {
+    public void insert(Seller seller) {
+        PreparedStatement st = null;
+
+        try{
+            st = conn.prepareStatement(
+                    "INSERT INTO seller "
+                    +"(Name, Email, BirthDate, BaseSalary, DepartmentId) "
+                    +"VALUES "
+                    +"(?, ?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
+            st.setString(1,seller.getName());
+            st.setString(2,seller.getEmail());
+            st.setDate(3,new java.sql.Date(seller.getBirthDate().getTime()));
+            st.setDouble(4,seller.getBaseSalary());
+            st.setInt(5,seller.getDepartment().getId());
+
+            int rowsAffected = st.executeUpdate();
+
+            if(rowsAffected > 0){
+                ResultSet rs = st.getGeneratedKeys();
+                if(rs.next()){
+                    int id = rs.getInt(1);
+                    seller.setId(id);
+                }
+                DB.closeResultSet(rs);
+            }
+            else {
+                throw new DbException("Nenhuma liga para ser modificada");
+            }
+        }
+        catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        finally {
+            DB.closeStatement(st);
+        }
 
     }
 
