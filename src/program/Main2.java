@@ -22,7 +22,10 @@ public class Main2 {
         Department department1 = new Department(null,"Gamer");
         departmentDao.insert(department1);
 
-
+        department = departmentDao.findById(5);
+        department.setName("Jogos");
+        departmentDao.update(department);
+        System.out.println("foi modificado para :"+ department.getName());
 
     }
 
